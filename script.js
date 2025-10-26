@@ -30,8 +30,9 @@ function dropHandler(evt, src) {
   evt.preventDefault();
   const data = evt.dataTransfer.getData("text/html");
   // explicitly listen only for drop events from "ex3_one"
-  if (evt.dataTransfer.getData("parent") === "ex3_one") {
-    src.innerHTML = ""; // ev.target.innerHTML;
+  // if (evt.dataTransfer.getData("parent") === "ex3_one") { // uncomment for 1_2.1
+  if (1) { // 1_2.2
+    src.innerHTML = "";
     evt.target.innerHTML = data;
   }
 }
@@ -46,11 +47,14 @@ function dropHandler(evt, src) {
   const poleNrTelefonu = document.getElementById("ex2_text");
   poleNrTelefonu.addEventListener("change", weryfikujNrTelefonu);
 
-  // Zad. 1_2.1: przenoszenie w jedną stronę
+  // Zad. 1_2.1, 1_2.2: przenoszenie w jedną/obie strony
   const source = document.getElementById("ex3_one");
   const target = document.getElementById("ex3_two");
 
   source.addEventListener("dragstart", dragstartHandler);
+  target.addEventListener("dragstart", dragstartHandler);
+  source.addEventListener( "dragover", (evt) => evt.preventDefault());
+  source.addEventListener(     "drop", (evt) => dropHandler(evt, target));
   target.addEventListener( "dragover", (evt) => evt.preventDefault());
   target.addEventListener(     "drop", (evt) => dropHandler(evt, source));
 
