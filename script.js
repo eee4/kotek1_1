@@ -20,6 +20,22 @@ function weryfikujNrTelefonu(evt) {
   else poleNrTelefonuText.innerText = "Ten numer telefonu jest nieprawidłowy";
 }
 
+function dragstartHandler(evt) {
+  // Przekaż potrzebne dane
+  evt.dataTransfer.setData("text/html", evt.target.outerHTML);
+  evt.dataTransfer.setData(   "parent", evt.target.parentElement.id);
+}
+
+function dropHandler(evt, src) {
+  evt.preventDefault();
+  const data = evt.dataTransfer.getData("text/html");
+  // explicitly listen only for drop events from "ex3_one"
+  if (evt.dataTransfer.getData("parent") === "ex3_one") {
+    src.innerHTML = ""; // ev.target.innerHTML;
+    evt.target.innerHTML = data;
+  }
+}
+
 (function () {
 
   // Zad. 1_1.1: liczby 0-9
@@ -29,5 +45,13 @@ function weryfikujNrTelefonu(evt) {
   // Zad. 1_1.2: weryfikacja numeru telefonu
   const poleNrTelefonu = document.getElementById("ex2_text");
   poleNrTelefonu.addEventListener("change", weryfikujNrTelefonu);
+
+  // Zad. 1_2.1: przenoszenie w jedną stronę
+  const source = document.getElementById("ex3_one");
+  const target = document.getElementById("ex3_two");
+
+  source.addEventListener("dragstart", dragstartHandler);
+  target.addEventListener( "dragover", (evt) => evt.preventDefault());
+  target.addEventListener(     "drop", (evt) => dropHandler(evt, source));
 
 })();
